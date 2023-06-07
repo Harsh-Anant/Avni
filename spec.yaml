@@ -1,0 +1,219 @@
+version: 0.39.1
+type: DeclarativeSource
+check:
+  type: CheckStream
+  stream_names:
+    - Subjects
+streams:
+  - type: DeclarativeStream
+    name: Subjects
+    primary_key: []
+    schema_loader:
+      type: InlineSchemaLoader
+      schema:
+        $schema: http://json-schema.org/schema#
+        properties:
+          content:
+            items:
+              properties:
+                Groups:
+                  type: array
+                ID:
+                  type: string
+                Registration date:
+                  type: string
+                Subject type:
+                  type: string
+                Voided:
+                  type: boolean
+                audit:
+                  properties:
+                    Created at:
+                      type: string
+                    Created by:
+                      type: string
+                    Last modified at:
+                      type: string
+                    Last modified by:
+                      type: string
+                  type: object
+                encounters:
+                  type: array
+                enrolments:
+                  items:
+                    type: string
+                  type: array
+                location:
+                  properties:
+                    Village:
+                      type: string
+                  type: object
+                observations:
+                  properties:
+                    Date of birth:
+                      type: string
+                    Father's Name:
+                      type: string
+                    First name:
+                      type: string
+                    Gender:
+                      type: string
+                    Last name:
+                      type: string
+                    Mother's Name:
+                      type: string
+                    Phone Number:
+                      type: number
+                  type: object
+              type: object
+            type: array
+          pageSize:
+            type: number
+          totalElements:
+            type: number
+          totalPages:
+            type: number
+        type: object
+    retriever:
+      type: SimpleRetriever
+      requester:
+        type: HttpRequester
+        url_base: https://app.avniproject.org/
+        path: api/subjects
+        http_method: GET
+        request_parameters:
+          '"lastModifiedDateTime"': '{{ config[''lastmodifieddatetime''] }}'
+          '"subjectType"': '{{ config[''subjecttype''] }}'
+          '"concepts"': '{{ config[''concepts''] }}'
+          '"locationIds"': '{{ config[''locationids''] }}'
+        request_headers: {}
+        authenticator:
+          type: ApiKeyAuthenticator
+          header: auth-token
+          api_token: '{{ config[''api_key''] }}'
+        request_body_json: {}
+      record_selector:
+        type: RecordSelector
+        extractor:
+          type: DpathExtractor
+          field_path: []
+      paginator:
+        type: NoPagination
+  - type: DeclarativeStream
+    name: Program Enrolment
+    primary_key: []
+    schema_loader:
+      type: InlineSchemaLoader
+      schema:
+        $schema: http://json-schema.org/schema#
+        properties:
+          content:
+            items:
+              properties:
+                Groups:
+                  type: array
+                ID:
+                  type: string
+                Registration date:
+                  type: string
+                Subject type:
+                  type: string
+                Voided:
+                  type: boolean
+                audit:
+                  properties:
+                    Created at:
+                      type: string
+                    Created by:
+                      type: string
+                    Last modified at:
+                      type: string
+                    Last modified by:
+                      type: string
+                  type: object
+                encounters:
+                  type: array
+                enrolments:
+                  items:
+                    type: string
+                  type: array
+                location:
+                  properties:
+                    Village:
+                      type: string
+                  type: object
+                observations:
+                  properties:
+                    Date of birth:
+                      type: string
+                    Father's Name:
+                      type: string
+                    First name:
+                      type: string
+                    Gender:
+                      type: string
+                    Last name:
+                      type: string
+                    Mother's Name:
+                      type: string
+                    Phone Number:
+                      type: number
+                  type: object
+              type: object
+            type: array
+          pageSize:
+            type: number
+          totalElements:
+            type: number
+          totalPages:
+            type: number
+        type: object
+    retriever:
+      type: SimpleRetriever
+      requester:
+        type: HttpRequester
+        url_base: https://app.avniproject.org/
+        path: api/programEnrolments
+        http_method: GET
+        request_parameters:
+          '"lastModifiedDateTime"': '"2022-10-31T01:30:00.000Z"'
+        request_headers: {}
+        authenticator:
+          type: ApiKeyAuthenticator
+          header: auth-token
+          api_token: '{{ config[''api_key''] }}'
+        request_body_json: {}
+      record_selector:
+        type: RecordSelector
+        extractor:
+          type: DpathExtractor
+          field_path: []
+      paginator:
+        type: NoPagination
+spec:
+  connection_specification:
+    $schema: http://json-schema.org/draft-07/schema#
+    type: object
+    required:
+      - lastmodifieddatetime
+      - api_key
+    properties:
+      subjecttype:
+        title: subjectType
+        type: string
+      lastmodifieddatetime:
+        title: lastModifiedDateTime
+        type: string
+      concepts:
+        title: concepts
+        type: string
+      locationids:
+        title: locationids
+        type: string
+      api_key:
+        type: string
+        title: API Key
+        airbyte_secret: true
+    additionalProperties: true
+  documentation_url: https://example.org
+  type: Spec
