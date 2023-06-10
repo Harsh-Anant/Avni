@@ -94,9 +94,7 @@ class SourceAvniConnector(AbstractSource):
     def check_connection(self, logger, config) -> Tuple[bool, any]:
         try:
             authenticator = TokenAuthenticator(config["api_key"], "ApiKey")
-            stream = Apps(authenticator=authenticator, config=config)
-            records = stream.read_records(sync_mode=SyncMode.full_refresh)
-            next(records)
+            stream = Avni(authenticator=authenticator, config=config)
             return True, "200 OK"
         except requests.exceptions.RequestException as e:
             return False, "Connection Failed."
