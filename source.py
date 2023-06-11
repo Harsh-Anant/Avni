@@ -37,9 +37,9 @@ class Avni(HttpStream):
             self.locationids = None
 
 
-    def next_page_token(self, response: requests.Response) -> Optional[Mapping[str, Any]]:
+    '''def next_page_token(self, response: requests.Response) -> Optional[Mapping[str, Any]]:
         # The API does not offer pagination, so we return None to indicate there are no more pages in the response
-        return None
+        return None'''
 
     def path(
         self, 
@@ -71,7 +71,7 @@ class Avni(HttpStream):
             next_page_token: Mapping[str, Any] = None,
     ) -> MutableMapping[str, Any]:
         # The api requires that we include the base currency as a query param so we do that in this method
-        return {'lastModifiedDateTime': self.lastmodifieddatetime, 'concepts':self.concepts, 'subjectType': self.subjecttype,'locationids':self.locationids}
+        return {'lastModifiedDateTime': self.lastmodifieddatetime, 'concepts':self.concepts, 'subjectType': self.subjecttype,'locationIds':self.locationids}
     
     def parse_response(
             self,
