@@ -99,6 +99,9 @@ class SourceAvniConnector(AbstractSource):
         except requests.exceptions.RequestException as e:
             return False, "Connection Failed."
 
-    def streams(self, config: Mapping[str, Any]) -> List[Stream]: 
-        auth = TokenAuthenticator(config["api_key"], auth_method="ApiKey")
-        return [Avni(authenticator=auth,config=config)]
+    def streams(self, config: Mapping[str, Any]) -> List[Stream]:
+        try:
+            auth = TokenAuthenticator(config["api_key"], auth_method="ApiKey")
+            return [Avni(authenticator=auth,config=config)]
+        except requests.exceptions.RequestException as e:
+            return False, "Connection Failed."
