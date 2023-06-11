@@ -55,14 +55,14 @@ class Avni(HttpStream):
         # The api requires that we include apikey as a header so we do that in this method
         return {'auth-token': self.api_key}
 
-    def parse_response(
+    '''def parse_response(
         self,
         response: requests.Response,
         stream_state: Mapping[str, Any],
         stream_slice: Mapping[str, Any] = None,
         next_page_token: Mapping[str, Any] = None,
     ) -> Iterable[Mapping]:
-        return None  # TODO
+        return None  # TODO'''
 
     def request_params(
             self,
